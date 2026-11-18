@@ -199,7 +199,7 @@ export default function Library({ jump, openId, loading, items, admin, astraScho
       <div className="cards" onPointerOver={e => prefetchReviewer(e.target.closest?.('[data-rid]')?.dataset.rid)} onFocus={e => prefetchReviewer(e.target.closest?.('[data-rid]')?.dataset.rid)} onTouchStart={e => prefetchReviewer(e.target.closest?.('[data-rid]')?.dataset.rid)}>
         {rows.map((i, idx) => (
           <div className="clay card" key={i.id} data-rid={i.id} style={{ '--i': Math.min(idx, 12) }}>
-            <button type="button" className="rcover live" tabIndex={-1} aria-hidden="true" onClick={() => openNormal(i)}><LivePreview item={i} /></button>
+            <div className="rcover live" aria-hidden="true" onClick={() => openNormal(i)}><LivePreview item={i} /></div>
             <span className="tag" style={{ background: color(i.subject) }}>{i.subject}</span>{i.removed_at ? <small className="priv rm">Removed</small> : i.is_public === false && <small className="priv">Private</small>}
             <button className="title" onClick={() => openNormal(i)}>{i.title}</button>
             {i.preview?.n && <small className="rc-n">{[i.preview.min ? `${i.preview.min} min read` : '', i.preview.t?.length ? `${i.preview.t.length}+ topics` : '', i.preview.n.cards ? `${i.preview.n.cards} cards` : '', i.preview.n.quiz ? `${i.preview.n.quiz} questions` : ''].filter(Boolean).join(' · ')}</small>}

@@ -2140,3 +2140,52 @@ html.inapp .login-card,html.inapp .lg{min-height:100vh}
 .srch-rv{display:flex;align-items:center;gap:12px;text-align:left}.srch-lp{flex:none;width:112px}.srch-rv>div:last-child{min-width:0}
 .pf-tile{padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
 @media (max-width:420px){.srch-lp{width:96px}}
+
+/* ===== v84.1: preview box must sit exactly inside the card in every WebView ===== */
+.rcover.live{display:block;position:relative;width:100%;max-width:100%;box-sizing:border-box;margin:0 0 10px;padding:0;text-align:left;cursor:pointer;overflow:hidden;border-radius:14px;-webkit-tap-highlight-color:transparent}
+.rcover.live .lp{width:100%;max-width:100%;box-sizing:border-box;margin:0;left:0;right:auto;float:none;isolation:isolate;-webkit-transform:translateZ(0);transform:translateZ(0)}
+.lp-frame{max-width:none;right:auto;margin:0}
+.inapp-banner{display:none}
+
+/* ===== v85: simpler, friendlier Feed + a close (X) button on the composer ===== */
+/* collapsed composer: one calm pill */
+.feed-col .comp-slim{min-height:64px;padding:12px 14px;gap:12px;border-radius:20px;border:1px solid var(--line);background:var(--card);box-shadow:0 6px 18px -14px rgba(30,40,90,.35);transition:box-shadow .15s,border-color .15s}
+.comp-slim .cs-ph{flex:1;min-width:0;padding:11px 16px;border-radius:99px;background:var(--soft);color:var(--mute);font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.comp-slim .cs-go{flex:none;display:grid;place-items:center;width:44px;height:44px;padding:0;border-radius:50%;background:var(--accbg,var(--soft));color:var(--acc-strong,var(--acc))}
+.comp-slim:hover{border-color:color-mix(in srgb,var(--acc) 35%,var(--line))}
+.comp-slim:focus-visible{outline:3px solid var(--acc-ring,rgba(59,85,230,.35));outline-offset:2px}
+
+/* open composer: header with X, big writing area, quiet tools, one primary button */
+.composer.sheet{gap:12px;padding:14px 16px 16px;border-radius:22px}
+.comp-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-2px 0 0}
+.comp-head b{font-size:17px;letter-spacing:-.01em}
+.comp-x{flex:none;display:grid;place-items:center;width:44px;height:44px;margin:-6px -8px -6px 0;padding:0;border:0;border-radius:50%;background:var(--soft);color:var(--ink);cursor:pointer;touch-action:manipulation;transition:background .15s,transform .1s}
+.comp-x:hover{background:var(--line)}.comp-x:active{transform:scale(.94)}
+.comp-x:focus-visible{outline:3px solid var(--acc-ring,rgba(59,85,230,.4));outline-offset:2px}
+.composer.sheet .comp-row textarea{min-height:110px;font-size:16px;line-height:1.5;border-radius:16px}
+.composer.sheet .comp-foot{padding-top:10px;border-top:1px solid var(--line);flex-wrap:wrap;gap:10px}
+.composer.sheet .comp-tools .tool{width:44px;height:44px;border-radius:14px}
+.composer.sheet .comp-tools .toggle{min-height:44px;border-radius:14px}
+.composer.sheet .comp-send{margin-left:auto}
+.composer.sheet .comp-send .btn.pri{min-height:46px;padding:0 26px;border-radius:99px;font-size:16px;font-weight:800}
+.pic-x{width:32px;height:32px}
+
+/* phones: writing a post takes the whole screen (clear X at the top, Post at the bottom) */
+@media (max-width:700px){
+  .composer.sheet{position:fixed;top:0;right:0;bottom:0;left:0;z-index:34;margin:0;border-radius:0!important;border:0!important;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:calc(10px + env(safe-area-inset-top)) 14px calc(12px + env(safe-area-inset-bottom));background:var(--card);animation:sheet .22s ease-out}
+  .composer.sheet .comp-row textarea{min-height:42vh;min-height:42dvh}
+  .composer.sheet .comp-foot{position:sticky;bottom:0;margin:auto -14px 0;padding:10px 14px;background:var(--card)}
+  .composer.sheet .comp-send{flex:1;justify-content:flex-end}
+}
+
+/* feed: calmer rhythm, softer cards, bigger tap targets on the action row */
+.feed-col{gap:14px}
+.feed-col .post{border-radius:20px;border:1px solid var(--line);box-shadow:0 8px 22px -18px rgba(30,40,90,.4)}
+.post-acts .act{min-height:44px;padding:8px 14px;border-radius:12px;touch-action:manipulation}
+.feed-dash>summary{min-height:44px;display:flex;align-items:center}
+.load-more{align-self:center;min-height:46px;padding:0 24px;border-radius:99px}
+@media (max-width:700px){
+  .feed-col .post{border-radius:0;border-left:0;border-right:0;box-shadow:none}
+  .post-acts{justify-content:space-between}
+}
+@media (prefers-reduced-motion:reduce){.comp-x,.comp-slim{transition:none}.composer.sheet{animation:none}}

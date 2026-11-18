@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { inAppName, isAndroid, chromeIntentUrl } from './inapp'
 import { sb } from './supabase'
 import Icon, { Logo } from './Icons'
 import { peekShared } from './shareLink'
@@ -216,12 +215,6 @@ export default function Login({ ready }) {
                 </span>
               </div>)}
 
-            {inAppName() && (
-              <div className="inapp-banner" role="note">
-                <span aria-hidden="true">⚠️</span>
-                <div><b>You are inside the {inAppName()} browser</b>Google sign-in does not work here. Open AraLab in {isAndroid() ? 'Chrome' : 'Safari'}, or sign in with your email and password.
-                  <br /><button type="button" onClick={() => { if (isAndroid()) { location.href = chromeIntentUrl() } else { try { navigator.clipboard.writeText(location.href) } catch { /* ignore */ } alert('Link copied. Open Safari and paste it, or tap the ••• menu and choose "Open in Browser".') } }}>{isAndroid() ? 'Open in Chrome' : 'Copy link'}</button></div>
-              </div>)}
             <div className="lg-oauth">
               <button type="button" className="lg-soc" onClick={() => goOAuth('google')} disabled={!ready || !!busy} aria-busy={busy === 'google'}>{busy === 'google' ? <Spinner /> : <GoogleIcon />}<span>Continue with Google</span></button>
               <button type="button" className="lg-soc" onClick={() => goOAuth('facebook')} disabled={!ready || !!busy} aria-busy={busy === 'facebook'}>{busy === 'facebook' ? <Spinner /> : <FacebookIcon />}<span>Continue with Facebook</span></button>

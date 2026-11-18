@@ -77,13 +77,28 @@ function Composer({ me, person, admin, toast, onPosted }) {
     } catch (e) { removePostImages(up.paths); if (vid) removePostVideo(vid.path); toast(e.message) }
     setStep(''); setBusy(false)
   }
+  // v85: a clear way out. X (and Escape) closes the composer; if something was written we ask before throwing it away.
+  const hasDraft = !!(body.trim() || pics.length || video || share || ann || title.trim())
+  const reset = () => {
+    pics.forEach(p => URL.revokeObjectURL(p.url)); if (video) URL.revokeObjectURL(video.url)
+    setBody(''); mentions.reset(); setShare(false); setPics([]); setTitle(''); setVideo(null); setPin(false); setAnn(false); setAnon(false); setOpen(false)
+  }
+  const close = () => {
+    if (busy) return
+    if (hasDraft) { let ok = true; try { ok = window.confirm('Discard this post?') } catch { /* some in-app browsers block dialogs: just discard */ } if (!ok) return }
+    reset()
+  }
   if (!open && !body && !pics.length && !video && !share && !ann) return (
     <button type="button" className="clay tile comp-slim" onClick={() => setOpen(true)} data-testid="composer">
-      <Avatar person={person} size={38} /><span>Share what you’re studying…</span><span className="cs-go"><Icon name="edit" size={16} /> Post</span>
+      <Avatar person={person} size={40} /><span className="cs-ph">What are you studying today?</span><span className="cs-go" aria-hidden="true"><Icon name="image" size={18} /></span>
     </button>
   )
   return (
-    <div className={ann ? 'clay tile composer premium' : 'clay tile composer'} data-testid="composer">
+    <div className={ann ? 'clay tile composer sheet premium' : 'clay tile composer sheet'} data-testid="composer" role="group" aria-label={ann ? 'New announcement' : 'Create post'} onKeyDown={e => { if (e.key === 'Escape' && !mentions.open) { e.stopPropagation(); close() } }}>
+      <div className="comp-head">
+        <b>{ann ? 'New announcement' : anon ? 'Post anonymously' : 'Create post'}</b>
+        <button type="button" className="comp-x" onClick={close} aria-label="Close and discard post" title="Close"><Icon name="x" size={20} /></button>
+      </div>
       {ann && <div className="prem-ribbon"><Icon name="megaphone" size={13} /> New announcement <span className="prem-note">Posts as AraLab. Your name stays hidden.</span></div>}
       {ann && <input className="clay-in comp-title" value={title} maxLength={MAX_TITLE} onChange={e => setTitle(e.target.value)} placeholder="Headline (optional)" aria-label="Announcement headline" />}
       <div className="comp-row">
@@ -133,7 +148,7 @@ function Composer({ me, person, admin, toast, onPosted }) {
           {!ann && <AsToggle anonymous={anon} onChange={setAnon} />}
           {admin && <button type="button" className={ann ? 'tool prem-btn on' : 'tool prem-btn'} aria-pressed={ann} title="Announcement" aria-label="Announcement" onClick={() => toggleAnn(!ann)}><Icon name="megaphone" size={17} /><span className="tl"> Announcement</span></button>}
         </div>
-        <span className="comp-send"><small className="mute">{body.length}/{MAX_POST}</small><button className="btn pri" disabled={busy || empty} onClick={submit}>{busy ? (step || 'Posting…') : ann ? 'Publish announcement' : 'Post'}</button></span>
+        <span className="comp-send">{body.length > MAX_POST * 0.8 && <small className="mute">{body.length}/{MAX_POST}</small>}<button className="btn pri" disabled={busy || empty} onClick={submit}>{busy ? (step || 'Posting…') : ann ? 'Publish announcement' : 'Post'}</button></span>
       </div>
     </div>
   )
