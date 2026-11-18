@@ -1,0 +1,31 @@
+{
+  "name": "aralab",
+  "private": true,
+  "license": "MIT",
+  "version": "4.8.0",
+  "type": "module",
+  "scripts": {
+    "templates": "node scripts/generate-templates.mjs",
+    "predev": "npm run templates",
+    "dev": "vite --port 3000 --strictPort",
+    "prebuild": "npm run templates",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@supabase/supabase-js": "^2.45.0",
+    "fflate": "^0.8.3",
+    "nodemailer": "^6.9.14",
+    "pdfjs-dist": "^6.5.438",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "satori": "^0.63.2",
+    "unpdf": "^0.12.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.0"
+  }
+}

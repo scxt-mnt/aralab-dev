@@ -1,0 +1,35 @@
+<!-- label: Poster Cards | description: Big colourful headings with numbered cards. (Rename this file without the underscore to enable it.) -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{title}}</title>
+{{>style}}
+<style>
+  /* your own CSS goes after {{>style}}. Theme colours: var(--bg) var(--card) var(--ink) var(--mute) var(--acc) var(--line) */
+  .hero{background:var(--acc);color:#fff;border-radius:20px;padding:28px;margin-bottom:20px}
+  .hero h1{color:#fff}.hero p{color:rgba(255,255,255,.85);margin:0}
+  .num{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;margin-right:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero"><h1>{{title}}</h1>{{#hasSummary}}<p>{{summary}}</p>{{/hasSummary}}</div>
+
+  {{#sections}}
+  <section class="card" data-rv>
+    <h2><span class="num">{{@number}}</span>{{heading}}</h2>
+    <ul>{{#points}}<li>{{.}}</li>{{/points}}</ul>
+  </section>
+  {{/sections}}
+
+  {{^sections}}<p class="sum">No notes sections were generated.</p>{{/sections}}
+
+  {{>terms}}
+  {{>flashcards}}
+  {{>quiz}}
+</div>
+{{>script}}
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!-- label: Study Deck | description: Sticky title bar with jump links, numbered notes, term grid, study aids, flip cards and quiz. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>{{title}}</title>
+{{>style}}
+<style>
+  body{padding:0}
+  .bar{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:10px 18px}
+  .bar-in{max-width:860px;margin:auto;display:flex;align-items:center;gap:12px}
+  .bar b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:45%}
+  .bar nav{margin-left:auto;display:flex;gap:6px;overflow-x:auto}
+  .bar a{flex:none;color:var(--mute);text-decoration:none;font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px;border:1px solid var(--line)}
+  .bar a:hover{color:var(--acc);border-color:var(--acc)}
+  .wrap{padding:22px 18px 40px}
+  .hero{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acc);border-radius:14px;padding:20px 22px;margin-bottom:18px}
+  .hero h1{margin:0 0 6px;font-size:26px}.hero p{margin:0;color:var(--mute)}
+  .label{margin:28px 0 10px;font-size:13px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--acc);scroll-margin-top:70px}
+  .sec{display:flex;align-items:center;gap:10px;margin:0 0 8px}
+  .sec .n{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:10px;background:var(--acc);color:#fff;font-weight:800;font-size:14px}
+  .sec h2{margin:0;font-size:18px}
+  .note{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 20px;margin-bottom:14px}
+  .note ul{list-style:none;padding:0;margin:0}
+  .note li{position:relative;padding-left:18px;margin:7px 0}
+  .note li:before{content:"";position:absolute;left:0;top:.7em;width:7px;height:7px;border-radius:50%;background:var(--acc)}
+  .terms{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+  .term{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .term b{display:block;color:var(--acc)}.term span{color:var(--mute);font-size:15px}
+  .qn{color:var(--acc);margin-right:4px}
+  .empty{color:var(--mute)}
+  @media print{.bar{display:none}}
+</style>
+</head>
+<body>
+<div class="bar"><div class="bar-in">
+  <b>{{title}}</b>
+  <nav>
+    <a href="#notes">Notes</a>
+    <a href="#terms">Terms</a>
+    {{#has.extras}}<a href="#aids">Study aids</a>{{/has.extras}}
+    <a href="#cards">Flashcards</a>
+    <a href="#quiz">Quiz</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+  <div class="hero"><h1>{{title}}</h1>{{#hasSummary}}<p>{{summary}}</p>{{/hasSummary}}</div>
+
+  <div class="label" id="notes">Notes</div>
+  {{#sections}}
+  <div class="sec"><span class="n">{{@number}}</span><h2>{{heading}}</h2></div>
+  <div class="note" data-rv><ul>{{#points}}<li>{{.}}</li>{{/points}}</ul></div>
+  {{/sections}}
+  {{^sections}}<p class="empty">No notes sections were generated.</p>{{/sections}}
+
+  <div class="label" id="terms">Key terms</div>
+  <div class="terms" data-rv>{{#terms}}<div class="term"><b>{{term}}</b><span>{{definition}}</span></div>{{/terms}}</div>
+  {{^terms}}<p class="empty">No key terms.</p>{{/terms}}
+
+  {{#has.extras}}<div class="label" id="aids">Study aids</div>{{>extras}}{{/has.extras}}
+
+  <div class="label" id="cards">Flashcards · tap to flip</div>
+  <div class="fcs">{{#flashcards}}<button class="fc"><span class="f">{{q}}</span><span class="b">{{a}}</span></button>{{/flashcards}}</div>
+  {{^flashcards}}<p class="empty">No flashcards.</p>{{/flashcards}}
+
+  <div class="label" id="quiz">Quiz</div>
+  {{#quiz}}
+  <div class="card q" data-a="{{answer}}">
+    <p><b><span class="qn">{{@number}}.</span>{{q}}</b></p>
+    {{#choices}}<button data-j="{{@index}}">{{.}}</button>{{/choices}}
+    <p class="why" hidden>{{why}}</p>
+  </div>
+  {{/quiz}}
+  {{^quiz}}<p class="empty">No quiz questions.</p>{{/quiz}}
+</div>
+{{>script}}
+</body>
+</html>
